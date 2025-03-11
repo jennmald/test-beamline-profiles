@@ -102,9 +102,7 @@ jobs:
       - name: using test-action
         uses: NSLS2/gha-beamline-integration-test@2025-1.0-test
         with:
-          conda_env_url: "https://zenodo.org/records/14862443/files/2025-1.0-py311-tiled.tar.gz"
           conda_env_md5: "3b1074c0827ee3baf0cdcd64917b9afa"
-          conda_env_path: "/home/runner/.cache/conda_env/"
           org: "${{ matrix.repos.org }}"
           repo: "${{ matrix.repos.repo }}"
           branch: "${{ matrix.repos.branch }}"
