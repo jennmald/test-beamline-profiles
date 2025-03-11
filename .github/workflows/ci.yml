@@ -96,13 +96,15 @@ jobs:
         run: |
           mkdir -p ~/.cache/conda_env
           wget -O ~/.cache/conda_env/conda_env.tar.gz "https://zenodo.org/records/14862443/files/2025-1.0-py311-tiled.tar.gz"
-          echo "3b1074c0827ee3baf0cdcd64917b9afa  ~/.cache/conda_env/conda_env.tar.gz" | md5sum -c -
+          echo "3b1074c0827ee3baf0cdcd64917b9afa  /home/runner/.cache/conda_env/conda_env.tar.gz" | md5sum -c -
           tar -xzf ~/.cache/conda_env/conda_env.tar.gz -C ~/.cache/conda_env
 
       - name: using test-action
         uses: NSLS2/gha-beamline-integration-test@2025-1.0-test
         with:
+          conda_env_url: "https://zenodo.org/records/14862443/files/2025-1.0-py311-tiled.tar.gz"
           conda_env_md5: "3b1074c0827ee3baf0cdcd64917b9afa"
+          conda_env_path: "/home/runner/.cache/conda_env/"
           org: "${{ matrix.repos.org }}"
           repo: "${{ matrix.repos.repo }}"
           branch: "${{ matrix.repos.branch }}"
