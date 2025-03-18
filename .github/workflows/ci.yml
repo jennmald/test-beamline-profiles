@@ -143,29 +143,14 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - run: echo "TEST_CONDA_PACKED_NAME=${{ needs.generate_conda_packd_envs.outputs.test_conda_packed_name }}" >> $GITHUB_ENV
-      - name: Cache conda environment
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/conda_env
-          key: ${{ runner.os }}-conda-${{ hashFiles('path/to/conda_env_file') }}
-          restore-keys: |
-            ${{ runner.os }}-conda-
-
-      - name: Download and extract conda environment
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: |
-          mkdir -p ~/.cache/conda_env
-          wget -O ~/.cache/conda_env/conda_env.tar.gz "https://zenodo.org/records/14862443/files/2025-1.0-py311-tiled.tar.gz"
-          echo "3b1074c0827ee3baf0cdcd64917b9afa  /home/runner/.cache/conda_env/conda_env.tar.gz" | md5sum -c -
-          tar -xzf ~/.cache/conda_env/conda_env.tar.gz -C ~/.cache/conda_env
-
       - name: using test-action
-        uses: NSLS2/gha-beamline-integration-test@2025-1.0-test
+        uses: NSLS2/gha-beamline-integration-test@caching
         with:
-          conda_env_path: "~/.cache/conda_env"
-          conda_env_md5: "3b1074c0827ee3baf0cdcd64917b9afa"
           org: "${{ matrix.repos.org }}"
           repo: "${{ matrix.repos.repo }}"
           branch: "${{ matrix.repos.branch }}"
           beamline-acronym: "${{ matrix.repos.beamline_acronym }}"
+          # these are required os the action is happy
+          # can we make these not required in the action?
+          conda_env_url: "https://zenodo.org/records/14862443/files/2025-1.0-py311-tiled.tar.gz"
+          conda_env_md5: "3b1074c0827ee3baf0cdcd64917b9afa"
